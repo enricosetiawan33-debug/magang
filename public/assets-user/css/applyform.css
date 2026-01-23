@@ -1,0 +1,71 @@
+/* applyform.css */
+:root {
+    --primary: #0d6efd;
+    --radius: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f8f9fb;
+}
+
+header h5 {
+    font-weight: 600;
+}
+
+.card {
+    border-radius: var(--radius);
+    border: none;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+input.form-control, select.form-select {
+    font-size: 0.9rem;
+}
+
+button.btn {
+    border-radius: var(--radius);
+}
+
+/* modal success */
+.modal-content {
+    border-radius: var(--radius);
+}
+
+.modal-content .bi-check-circle {
+    animation: pop 0.3s ease-in-out;
+}
+
+@keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* page transition */
+body {
+    opacity: 0;
+    /* HAPUS baris transform: translateY(20px); */
+    transition: opacity 0.8s ease; /* HAPUS ", transform 0.8s ease" */
+}
+
+body.fade-in {
+    opacity: 1;
+    /* HAPUS baris transform: translateY(0); */
+}
+
+/* Tambahan agar modal terlihat konsisten */
+.modal-content {
+    border-radius: 12px; /* Radius sudut agar tidak kaku */
+    border: none;        /* Hilangkan border default */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Bayangan halus */
+}
+
+/* Pastikan backdrop (layar abu-abu) menutupi full layar */
+.modal-backdrop {
+    width: 100vw;
+    height: 100vh;
+}

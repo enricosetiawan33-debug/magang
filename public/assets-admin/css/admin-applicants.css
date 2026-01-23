@@ -1,0 +1,125 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f6f9;
+  overflow-x: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  z-index: 1030;
+}
+
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+.sidebar.collapsed .sidebar-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+#toggleSidebar {
+  background: transparent;
+  border: none;
+}
+
+#main-content {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+  width: 70px;
+}
+.sidebar.collapsed .sidebar-text {
+  display: none;
+}
+.sidebar.collapsed ~ #main-content {
+  margin-left: 70px;
+}
+
+/* Tombol status */
+.status-btn {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-bottom: 3px;
+}
+.status-process { background-color: #3b82f6; }
+.status-accept { background-color: #22c55e; }
+.status-reject { background-color: #ef4444; }
+.status-btn:hover { opacity: 0.85; }
+
+/* Badge */
+.badge-status {
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: #fff;
+}
+.badge-status.Diproses { background-color: #3b82f6; }
+.badge-status.Diterima { background-color: #22c55e; }
+.badge-status.Ditolak { background-color: #ef4444; }
+
+/* Table adjustments */
+.table-responsive {
+  overflow-x: auto;
+}
+.table thead th {
+  white-space: nowrap;
+}
+
+/* Modal detail */
+#detailModal .modal-body {
+  font-size: 0.9rem;
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+  #main-content {
+    margin-left: 70px;
+  }
+  .sidebar {
+    position: fixed;
+    left: -250px;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+}
+@media (max-width: 768px) {
+  .status-btn {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+  .table {
+    font-size: 0.85rem;
+  }
+}

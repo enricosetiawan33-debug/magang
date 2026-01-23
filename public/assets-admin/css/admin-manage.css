@@ -1,0 +1,110 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f6f9;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(180deg, #1f2937, #111827);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  z-index: 1030;
+}
+
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+.sidebar.collapsed .sidebar-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+#toggleSidebar {
+  background: transparent;
+  border: none;
+}
+
+#main-content {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar.collapsed .sidebar-text {
+  display: none;
+}
+
+.sidebar.collapsed ~ #main-content {
+  margin-left: 70px;
+}
+
+/* Table buttons */
+.status-btn {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.status-process {
+  background-color: #3b82f6;
+}
+
+.status-accept {
+  background-color: #22c55e;
+}
+
+.status-reject {
+  background-color: #ef4444;
+}
+
+.status-btn:hover {
+  opacity: 0.85;
+}
+
+td .badge {
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.badge.process {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.badge.accept {
+  background-color: #22c55e;
+  color: white;
+}
+
+.badge.reject {
+  background-color: #ef4444;
+  color: white;
+}
