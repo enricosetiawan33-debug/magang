@@ -9,7 +9,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0"> 
     <title>Daftar Lowongan Magang - Biro Umum dan Pengadaan Barang dan Jasa</title>
-    
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets-user/images/logo.png') }}">  
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('assets-user/bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">    
     <!-- Bootstrap Icons -->
@@ -52,14 +52,14 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label small">Departemen</label>
+                        <label class="form-label small">Substansi</label>
                         <select id="filterDept" class="form-select form-select-sm">
                             <option value="">Semua</option>
                         </select>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label small">Tingkat Pendidikan</label>
+                        <label class="form-label small">Jenjang Pendidikan</label>
                         <select id="filterLevel" class="form-select form-select-sm">
                             <option value="">Semua</option>
                             <option>SMA/SMK</option>
@@ -115,25 +115,112 @@
     <div class="modal fade" id="jobModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content border-0 shadow-lg">
+                
                 <div class="modal-header bg-primary text-white">
                     <h5 id="jobModalTitle" class="modal-title fw-semibold"></h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <p id="jobModalBody" class="text-muted"></p>
-                    <ul class="list-unstyled small mb-3">
-                        <li><strong>Departemen:</strong> <span id="jobDept"></span></li>
-                        <li><strong>Jenjang:</strong> <span id="jobLevel"></span></li>
-                        <li><strong>Tenggat:</strong> <span id="jobDeadline"></span></li>
-                        <li><strong>Kuota:</strong> <span id="jobQuota"></span> orang</li>
-                    </ul>
-                    <hr>
-                    <h6 class="fw-semibold text-primary">Kualifikasi:</h6>
-                    <ul id="jobReqs" class="small ps-3 mb-0"></ul>
+                
+                <div class="modal-body pb-4">
+                    <p id="jobModalBody" class="text-muted mb-3"></p>
+                    
+                    <div class="d-flex flex-wrap gap-3 mb-2 small text-secondary">
+                        <span class="bg-light px-2 py-1 rounded border"><i class="bi bi-building me-1"></i> <span id="jobDept"></span></span>
+                        <span class="bg-light px-2 py-1 rounded border"><i class="bi bi-calendar-event me-1"></i> Tenggat: <span id="jobDeadline"></span></span>
+                    </div>
+
+                    <div class="section-title-line">
+                        👇 Pilih Jalur Pendaftaran Sesuai Jenjang Pendidikan Anda Saat Ini:
+                    </div>
+
+                    <div class="row g-3">
+                        
+                        <div class="col-md-4">
+                            <div class="edu-card" id="card-sma">
+                                <span class="edu-badge badge-sma">Siswa SMK/SMA</span>
+                                <small class="status-text" id="status-sma">(Status: Aktif)</small>
+                                
+                                <div class="text-center mb-2 text-primary small fw-bold" id="quota-box-sma">
+                                    <i class="bi bi-people-fill"></i> Kuota: <span id="quota-sma"></span>
+                                </div>
+
+                                <div class="edu-content" id="content-sma">
+                                    <strong>Jurusan:</strong>
+                                    <ul id="list-sma"></ul> 
+                                </div>
+
+                                <div class="lock-icon" id="lock-sma" style="display:none;">
+                                    <i class="bi bi-lock-fill"></i>
+                                    <div style="font-size:0.7rem; margin-top:5px;">Tidak dibuka untuk jenjang ini</div>
+                                </div>
+
+                                <div class="mt-auto">
+                                    <button class="btn btn-primary btn-sm w-100 btn-apply-track" id="btn-sma" data-level="SMA/SMK">
+                                        Daftar Jalur SMA/SMK
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="edu-card" id="card-d3">
+                                <span class="edu-badge badge-d3">Mahasiswa D3</span>
+                                <small class="status-text" id="status-d3">(Status: Aktif)</small>
+                                
+                                <div class="text-center mb-2 text-success small fw-bold" id="quota-box-d3">
+                                    <i class="bi bi-people-fill"></i> Kuota: <span id="quota-d3"></span>
+                                </div>
+
+                                <div class="edu-content" id="content-d3">
+                                    <strong>Jurusan:</strong>
+                                    <ul id="list-d3"></ul>
+                                </div>
+
+                                <div class="lock-icon" id="lock-d3" style="display:none;">
+                                    <i class="bi bi-lock-fill"></i>
+                                    <div style="font-size:0.7rem; margin-top:5px;">Tidak dibuka untuk jenjang ini</div>
+                                </div>
+
+                                <div class="mt-auto">
+                                    <button class="btn btn-primary btn-sm w-100 btn-apply-track" id="btn-d3" data-level="D3">
+                                        Daftar Jalur D3
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="edu-card" id="card-s1">
+                                <span class="edu-badge badge-s1">Mahasiswa D4/S1</span>
+                                <small class="status-text" id="status-s1">(Status: Aktif)</small>
+                                
+                                <div class="text-center mb-2 text-danger small fw-bold" id="quota-box-s1">
+                                    <i class="bi bi-people-fill"></i> Kuota: <span id="quota-s1"></span>
+                                </div>
+
+                                <div class="edu-content" id="content-s1">
+                                    <strong>Jurusan:</strong>
+                                    <ul id="list-s1"></ul>
+                                </div>
+
+                                <div class="lock-icon" id="lock-s1" style="display:none;">
+                                    <i class="bi bi-lock-fill"></i>
+                                    <div style="font-size:0.7rem; margin-top:5px;">Tidak dibuka untuk jenjang ini</div>
+                                </div>
+
+                                <div class="mt-auto">
+                                    <button class="btn btn-primary btn-sm w-100 btn-apply-track" id="btn-s1" data-level="S1/D4">
+                                        Daftar Jalur D4/S1
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> 
                 </div>
-                <div class="modal-footer">
-                    <button id="applyBtn" class="btn btn-primary px-4">Lamar Sekarang</button>
-                    <button class="btn btn-outline-secondary px-3" data-bs-dismiss="modal">Tutup</button>
+
+                <div class="modal-footer modal-footer-custom bg-white">
+                    <button class="btn btn-outline-secondary px-4 w-100" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>

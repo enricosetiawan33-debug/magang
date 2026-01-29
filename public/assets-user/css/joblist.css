@@ -218,3 +218,119 @@ body {
     }
 }
 
+/* === TAMBAHAN: STYLE MODAL PILIHAN JENJANG (3 KOLOM) === */
+
+/* Header Modal Custom */
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Judul Bagian Pilihan */
+.section-title-line {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin: 1.5rem 0;
+}
+.section-title-line::before,
+.section-title-line::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dee2e6;
+}
+.section-title-line:not(:empty)::before { margin-right: .5em; }
+.section-title-line:not(:empty)::after { margin-left: .5em; }
+
+/* Kartu Jenjang Pendidikan */
+.edu-card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+    background-color: #fff;
+    position: relative;
+}
+
+/* Header Kartu (Badge) */
+.edu-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Warna Badge per Jenjang */
+.badge-sma { background-color: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+.badge-d3  { background-color: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+.badge-s1  { background-color: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+
+/* Status Aktif / Non-Aktif Text */
+.status-text {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* Area Isi (List Jurusan) */
+.edu-content {
+    flex-grow: 1;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+.edu-content ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0;
+}
+.edu-content li {
+    margin-bottom: 0.25rem;
+    color: #444;
+}
+
+/* === STYLE KARTU DISABLED (TIDAK TERSEDIA) === */
+.edu-card.disabled {
+    background-color: #f8f9fa; /* Abu-abu redup */
+    border-color: #dee2e6;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
+.edu-card.disabled .edu-badge {
+    background-color: #e9ecef;
+    color: #6c757d;
+    border-color: #dee2e6;
+}
+
+.edu-card.disabled .status-text {
+    color: #adb5bd;
+}
+
+.edu-card.disabled .lock-icon {
+    font-size: 2rem;
+    color: #ced4da;
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.edu-card.disabled .edu-content {
+    display: none; /* Sembunyikan list jurusan jika disabled */
+}
+
+/* Footer Modal: Hilangkan border atas karena sudah ada di kartu */
+.modal-footer-custom {
+    border-top: none;
+    padding-top: 0;
+}

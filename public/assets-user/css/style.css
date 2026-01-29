@@ -1,17 +1,8 @@
 /* === STYLE DASAR === */
-html, body {
-  /* Mencegah scroll ke samping akibat animasi AOS atau margin negatif Bootstrap */
-  overflow-x: hidden; 
-  width: 100%;
-  position: relative;
-}
-
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #f8f9fa;
-}
-
-/* ... (lanjut ke style logo dll) */
+  }
   
   .logo {
   width: 70px;

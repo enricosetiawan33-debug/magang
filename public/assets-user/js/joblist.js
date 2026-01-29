@@ -1,93 +1,89 @@
-// === joblist.js ===
+// === joblist.js (FINAL FIX: Level & Date) ===
 
-// Ambil data lowongan dari variabel global yang di-set di joblist.blade.php
-// Jika data tidak ada, gunakan array kosong sebagai fallback
 const dbJobs = window.lowonganData || [];
 
-// Kita akan memformat data dari database agar sesuai dengan kebutuhan tampilan dan filter
-// Properti database: id, title, division, level, quota, deadline, description
-// Properti JS sebelumnya: id, title, dept, level, location, quota, deadline, description, requirements
-
-// Karena database tidak menyimpan 'requirements' dan 'location', kita hapus yang 'location'
-// dan gunakan 'description' saja untuk detail (Anda mungkin perlu menambah kolom 'requirements' di DB)
-
-// Memformat data dari database (lowongans) menjadi array 'jobs' yang siap digunakan JS
+// === 1. FORMATTING DATA SEBELUM RENDER ===
 const jobs = dbJobs.map(job => { 
   
-
+  // A. Format Requirements (Jurusan)
   let jobRequirements = [];
-    
   if (job.requirements) {
-      // 1. Hapus tanda titik (atau pemisah antar-poin Anda)
-      // 2. Pisahkan string berdasarkan tanda kutip ganda
-      // 3. Trim (hapus spasi) dan filter elemen yang kosong/tidak valid
-      
       jobRequirements = job.requirements
-          // Hapus semua karakter titik, spasi, atau pemisah lain di antara kutipan
-          .replace(/[.\s]+/g, ' ') // Ganti titik dan spasi berulang dengan satu spasi (opsional: jika ada pemisah antar kutipan)
-          .split('"') // Pisahkan berdasarkan tanda kutip ganda
-          .map(r => r.trim()) // Bersihkan setiap elemen
-          .filter(r => r.length > 0 && r !== '.'); // Pastikan hanya poin valid yang tersisa
-
-      // Solusi sederhana lain jika formatnya bersih:
-      // jobRequirements = job.requirements.split('"').filter(r => r.length > 1 && r.trim() !== '.');
+          .replace(/[.\s]+/g, ' ') 
+          .split('"') 
+          .map(r => r.trim()) 
+          .filter(r => r.length > 0 && r !== '.'); 
   }
 
-  // Kita kembalikan objek yang sudah lengkap.
+  // B. Format Tanggal (ISO -> Indonesia: 31 Januari 2026)
+  let formattedDate = '-';
+  if (job.deadline) {
+      const dateObj = new Date(job.deadline);
+      formattedDate = dateObj.toLocaleDateString('id-ID', { 
+          day: 'numeric', 
+          month: 'long', 
+          year: 'numeric' 
+      });
+  }
+
+  // C. Format Level (Agar tidak null)
+  let displayLevel = "-"; 
+  let raw = job.level;
+
+  if (raw && raw !== 'null') {
+      if (Array.isArray(raw)) {
+          // Jika data sudah array (dari cast Laravel)
+          displayLevel = raw.join(', ');
+      } else if (typeof raw === 'string') {
+          // Jika string, cek apakah itu JSON (kurung siku) atau text biasa
+          if (raw.trim().startsWith('[')) {
+              try {
+                  const parsed = JSON.parse(raw);
+                  displayLevel = Array.isArray(parsed) ? parsed.join(', ') : parsed;
+              } catch (e) {
+                  displayLevel = raw; // Gagal parse, pakai string aslinya
+              }
+          } else {
+              displayLevel = raw; // Text biasa (misal: "D3/S1")
+          }
+      }
+  }
+
   return { 
     id: job.id,
     title: job.title,
-    dept: job.division, // Menggunakan 'division' dari DB sebagai 'dept'
-    level: job.level,
+    dept: job.division ?? 'Umum',
+    level: displayLevel, // Gunakan hasil olahan di atas
     quota: job.quota,
-    deadline: job.deadline,
-    description: job.description, // Sekarang 'description' hanya berisi deskripsi
-    requirements: jobRequirements // Sekarang 'requirements' langsung dari kolom DB
+    deadline: job.deadline, // Data asli untuk sorting
+    formatted_deadline: formattedDate, // Data cantik untuk tampilan
+    description: job.description, 
+    requirements: jobRequirements 
   }
 });
-
-// Menampilkan daftar lowongan magang dan interaksi modal
 
 document.addEventListener("DOMContentLoaded", () => {
   const jobsContainer = document.getElementById("jobsContainer");
   const resultCount = document.getElementById("resultCount");
-
   const gridViewBtn = document.getElementById("gridViewBtn");
   const listViewBtn = document.getElementById("listViewBtn");
 
-  // --- Elemen Filter/Sort ---
+  // Filter Elements
   const qSearch = document.getElementById("qSearch");
   const filterDept = document.getElementById("filterDept");
   const filterLevel = document.getElementById("filterLevel");
   const sortBy = document.getElementById("sortBy");
   const btnReset = document.getElementById("btnReset");
 
-  // --- STATE SAAT INI ---
-  let currentFilters = {
-    search: '',
-    dept: '',
-    level: '',
-    sort: 'recent'
-  };
+  let currentFilters = { search: '', dept: '', level: '', sort: 'recent' };
 
-  // === FUNGSI BARU: POPULATE FILTER DEPARTEMEN ===
+  // --- Populate Filter ---
   const populateDepartmentFilter = () => {
-      // 1. Ambil semua nilai departemen (dept/division) dari data 'jobs'
       const allDepartments = jobs.map(job => job.dept);
-      
-      // 2. Filter untuk mendapatkan nilai unik saja
-      // Gunakan Set untuk mendapatkan nilai unik
       const uniqueDepartments = [...new Set(allDepartments)].sort();
-
-      // 3. Hapus semua opsi lama (kecuali 'Semua')
-      // Kita asumsikan opsi 'Semua' adalah yang pertama (index 0)
-      while (filterDept.options.length > 1) {
-          filterDept.remove(1);
-      }
-
-      // 4. Tambahkan opsi baru
+      while (filterDept.options.length > 1) filterDept.remove(1);
       uniqueDepartments.forEach(dept => {
-          if (dept) { // Pastikan nilai dept tidak kosong
+          if (dept) {
               const option = document.createElement('option');
               option.value = dept;
               option.textContent = dept;
@@ -96,30 +92,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   };
 
-  // ==== LOGIKA FILTERING & SORTING ====
-
+  // --- Filter & Sort Logic ---
   const applyFiltersAndSort = (data) => {
-    let filteredJobs = [...data]; // Copy data agar tidak mengubah array asli
-
-    // --- TAMBAHAN BARU: LOGIKA DEADLINE 23:59:59 ---
-    const now = new Date(); // Waktu sekarang
+    let filteredJobs = [...data];
+    const now = new Date();
     
+    // Filter Deadline (Hanya tampilkan yang belum lewat)
     filteredJobs = filteredJobs.filter(job => {
-        // Pastikan ada deadline
         if (!job.deadline) return true;
-
-        // Konversi string tanggal dari DB (misal "2025-10-20") ke Objek Date
         const deadlineDate = new Date(job.deadline);
-        
-        // PENTING: Set jam ke 23:59:59 (Akhir Hari)
-        // Ini memaksa deadline berlaku sampai detik terakhir di hari tersebut
         deadlineDate.setHours(23, 59, 59, 999);
-
-        // Bandingkan: Tampilkan job hanya jika Waktu Sekarang <= Deadline Akhir Hari
         return now <= deadlineDate;
     });
 
-    // 1. FILTER PENCARIAN (Search)
     if (currentFilters.search) {
       const query = currentFilters.search.toLowerCase();
       filteredJobs = filteredJobs.filter(job => 
@@ -127,46 +112,30 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
-    // 2. FILTER DEPARTEMEN (Dept / Division)
     if (currentFilters.dept) {
-      filteredJobs = filteredJobs.filter(job => 
-        job.dept === currentFilters.dept
-      );
+      filteredJobs = filteredJobs.filter(job => job.dept === currentFilters.dept);
     }
 
-    // 3. FILTER LEVEL (Level Pendidikan)
     if (currentFilters.level) {
         const filterValue = currentFilters.level.toUpperCase();
-        
         filteredJobs = filteredJobs.filter(job => {
-            // Pastikan job.level ada
-            if (!job.level) return false; 
-            
-            const jobLevel = job.level.toUpperCase();
-
-            // Jika filter adalah SMA/SMK, coba cocokkan dengan berbagai variasi di DB
-            if (filterValue.includes('SMA/SMK')) {
-                // Mencocokkan dengan 'SMA/SMK', 'SMK', atau 'SEDERAJAT'
-                return jobLevel.includes('SMA/SMK') || 
-                      jobLevel.includes('SMK') || 
-                      jobLevel.includes('SEDERAJAT');
+            const jobLevelString = String(job.level).toUpperCase();
+            if (filterValue.includes('SMA') || filterValue.includes('SMK')) {
+                return jobLevelString.includes('SMA') || 
+                       jobLevelString.includes('SMK') || 
+                       jobLevelString.includes('SLTA') || 
+                       jobLevelString.includes('SEDERAJAT');
             }
-            
-            // Untuk D3, S1, atau filter lain, gunakan perbandingan normal
-            return jobLevel.includes(filterValue);
+            return jobLevelString.includes(filterValue);
         });
     }
 
-    // 4. SORTING
     filteredJobs.sort((a, b) => {
       if (currentFilters.sort === 'recent') {
-        // Sortir berdasarkan ID atau tanggal dibuat (kita gunakan ID/created_at jika ada)
-        return b.id - a.id; // Terbaru = ID lebih besar di depan
+        return b.id - a.id; 
       } else if (currentFilters.sort === 'deadline') {
-        // Sortir berdasarkan deadline terdekat
         return new Date(a.deadline) - new Date(b.deadline);
       } else if (currentFilters.sort === 'title') {
-        // Sortir berdasarkan Judul A->Z
         return a.title.localeCompare(b.title);
       }
       return 0;
@@ -175,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return filteredJobs;
   };
 
-  // Jika elemen ada (untuk menghindari error jika JS dipanggil di halaman lain)
+  // --- Layout Toggle ---
   if (gridViewBtn && listViewBtn && jobsContainer) {
       gridViewBtn.addEventListener("click", () => {
         jobsContainer.classList.remove("list-view");
@@ -188,16 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
         jobsContainer.classList.add("list-view");
         listViewBtn.classList.add("active");
         gridViewBtn.classList.remove("active");
-        renderJobs(); // re-render kartu dalam bentuk list
+        renderJobs();
       });
   }
 
-  // ==== Render daftar lowongan ====
+  // --- Render Function ---
   const renderJobs = () => {
-    // Terapkan filter dan sort sebelum rendering
     const displayedJobs = applyFiltersAndSort(jobs);
-    
-    // ... (Logika filter dan sort akan ditambahkan di sini, sementara ini kita render semua)
     jobsContainer.innerHTML = "";
 
     if (displayedJobs.length === 0) {
@@ -206,139 +172,150 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="alert alert-warning text-center" role="alert">
                     <i class="bi bi-exclamation-triangle me-2"></i> Tidak ada lowongan yang ditemukan sesuai filter.
                 </div>
-            </div>
-        `;
+            </div>`;
         resultCount.textContent = 0;
         return;
     }
     
-    // Tentukan layout (grid/list)
     const isListView = jobsContainer.classList.contains("list-view");
 
     displayedJobs.forEach((job) => {
       const card = document.createElement("div");
       card.className = isListView ? "col-12" : "col-md-6 col-lg-4"; 
       
+      // Menggunakan variable yang sudah diformat: job.level & job.formatted_deadline
       card.innerHTML = `
       <div class="card shadow-sm border-0 h-100 hover-card job-card d-flex flex-column">
-        
-      <div class="card-body flex-grow-1"> 
-        
-        <h6 class="fw-semibold text-primary job-title">${job.title}</h6> 
-        
-        <div class="job-meta-group pt-2">
-            <p class="small text-muted mb-1"><i class="bi bi-building"></i> ${job.dept}</p>
-            <p class="small text-muted mb-1"><i class="bi bi-mortarboard"></i> ${job.level}</p>
-            <p class="small text-muted mb-1">
-				<i class="bi bi-calendar-date"></i> 
-				${job.deadline.split('T')[0].split('-').reverse().join('-')}
-			</p>
-            <p class="small text-muted mb-0"><i class="bi bi-people"></i> Kuota: ${job.quota} orang</p>
+        <div class="card-body flex-grow-1"> 
+            <h6 class="fw-semibold text-primary job-title">${job.title}</h6> 
+            <div class="job-meta-group pt-2">
+                <p class="small text-muted mb-1"><i class="bi bi-building"></i> ${job.dept}</p>
+                <p class="small text-muted mb-1"><i class="bi bi-mortarboard"></i> ${job.level}</p> 
+                <p class="small text-muted mb-1"><i class="bi bi-calendar-date"></i> ${job.formatted_deadline}</p>
+                <p class="small text-muted mb-0"><i class="bi bi-people"></i> Kuota: ${job.quota} orang</p>
+            </div>
         </div>
-        
-      </div>
-      
-      <div class="card-footer bg-white border-0 pt-0 pb-3"> 
-          <button class="btn btn-primary btn-sm w-100 detail-btn" data-id="${job.id}">
-            <i class="bi bi-info-circle me-1"></i> Detail
-          </button>
-      </div>
-    </div>
-      `;
+        <div class="card-footer bg-white border-0 pt-0 pb-3"> 
+            <button class="btn btn-primary btn-sm w-100 detail-btn" data-id="${job.id}">
+                <i class="bi bi-info-circle me-1"></i> Detail
+            </button>
+        </div>
+      </div>`;
       jobsContainer.appendChild(card);
     });
 
     resultCount.textContent = displayedJobs.length;
-    // Panggil fungsi untuk update pagination di sini jika Anda mengimplementasikannya
   };
 
-  // Search Input
-  qSearch.addEventListener('input', () => {
-      currentFilters.search = qSearch.value;
-      renderJobs();
-  });
-
-  // Filter Departemen
-  filterDept.addEventListener('change', () => {
-      currentFilters.dept = filterDept.value;
-      renderJobs();
-  });
-
-  // Filter Level
-  filterLevel.addEventListener('change', () => {
-      currentFilters.level = filterLevel.value;
-      renderJobs();
-  });
-
-  // Sort By
-  sortBy.addEventListener('change', () => {
-      currentFilters.sort = sortBy.value;
-      renderJobs();
-  });
-
-  // Tombol Reset
+  // --- Event Listeners ---
+  qSearch.addEventListener('input', () => { currentFilters.search = qSearch.value; renderJobs(); });
+  filterDept.addEventListener('change', () => { currentFilters.dept = filterDept.value; renderJobs(); });
+  filterLevel.addEventListener('change', () => { currentFilters.level = filterLevel.value; renderJobs(); });
+  sortBy.addEventListener('change', () => { currentFilters.sort = sortBy.value; renderJobs(); });
+  
   btnReset.addEventListener('click', () => {
-      qSearch.value = '';
-      filterDept.value = '';
-      filterLevel.value = '';
-      sortBy.value = 'recent';
-      
-      currentFilters = {
-          search: '',
-          dept: '',
-          level: '',
-          sort: 'recent'
-      };
+      qSearch.value = ''; filterDept.value = ''; filterLevel.value = ''; sortBy.value = 'recent';
+      currentFilters = { search: '', dept: '', level: '', sort: 'recent' };
       renderJobs();
   });
 
   populateDepartmentFilter();
-
   renderJobs();
 
-  // ==== Modal Detail ====
-  // ... (Pastikan semua variabel modal didefinisikan di sini jika Anda memindahkannya)
-  const jobModal = new bootstrap.Modal(document.getElementById("jobModal"));
+  // ==== LOGIKA MODAL DETAIL ====
+  const jobModalElement = document.getElementById("jobModal");
+  const jobModal = new bootstrap.Modal(jobModalElement);
+  
   const modalTitle = document.getElementById("jobModalTitle");
   const modalBody = document.getElementById("jobModalBody");
   const modalDept = document.getElementById("jobDept");
-  const modalLevel = document.getElementById("jobLevel");
   const modalDeadline = document.getElementById("jobDeadline");
-  const modalQuota = document.getElementById("jobQuota");
-  const modalReqs = document.getElementById("jobReqs");
-  const applyBtn = document.getElementById("applyBtn");
+
+  const setupEduCard = (type, isActive, requirementsHTML, quotaValue) => {
+      const card = document.getElementById(`card-${type}`);
+      const content = document.getElementById(`content-${type}`);
+      const lock = document.getElementById(`lock-${type}`);
+      const btn = document.getElementById(`btn-${type}`);
+      const list = document.getElementById(`list-${type}`);
+      const statusText = document.getElementById(`status-${type}`);
+      const quotaSpan = document.getElementById(`quota-${type}`);
+      const quotaBox = document.getElementById(`quota-box-${type}`);
+
+      if (isActive) {
+          card.classList.remove("disabled");
+          content.style.display = "block";
+          lock.style.display = "none";
+          quotaBox.style.display = "block"; 
+          
+          list.innerHTML = requirementsHTML;
+          statusText.textContent = "(Status: Aktif)";
+          quotaSpan.textContent = quotaValue + " Orang";
+
+          btn.disabled = false;
+          btn.classList.remove("btn-secondary");
+          btn.classList.add("btn-primary");
+          btn.innerHTML = type === 'sma' ? 'Daftar Jalur SMA/SMK' : (type === 'd3' ? 'Daftar Jalur D3' : 'Daftar Jalur D4/S1');
+      } else {
+          card.classList.add("disabled");
+          content.style.display = "none";
+          lock.style.display = "block"; 
+          quotaBox.style.display = "none"; 
+          
+          list.innerHTML = "";
+          statusText.textContent = "";
+          quotaSpan.textContent = "";
+
+          btn.disabled = true;
+          btn.classList.remove("btn-primary");
+          btn.classList.add("btn-secondary"); 
+          btn.innerHTML = '<i class="bi bi-slash-circle me-1"></i> Tidak Tersedia';
+      }
+  };
 
   jobsContainer.addEventListener("click", (e) => {
     if (e.target.closest(".detail-btn")) {
       const id = e.target.closest(".detail-btn").dataset.id;
       const job = jobs.find((j) => j.id == id);
 
-      if (!job) return; // Jika tidak ketemu
+      if (!job) return; 
 
       modalTitle.textContent = job.title;
       modalBody.textContent = job.description;
       modalDept.textContent = job.dept;
-      modalLevel.textContent = job.level;
-      modalDeadline.textContent = job.deadline.split('T')[0].split('-').reverse().join('-');
-      modalQuota.textContent = job.quota;
+      modalDeadline.textContent = job.formatted_deadline; // Gunakan tanggal format Indonesia
       
-      // Karena 'requirements' di-parse sederhana di atas, tampilkan saja hasilnya
-      modalReqs.innerHTML = job.requirements.map((r) => `<li>${r.trim()}</li>`).join("");
+      const reqsHTML = job.requirements.length > 0 
+          ? job.requirements.map((r) => `<li>${r}</li>`).join("")
+          : "<li>Semua Jurusan Relevan</li>";
 
-      // Simpan posisi untuk bisa otomatis terisi di applyform
-	  localStorage.setItem("lowonganId", job.id);
+      let levelString = String(job.level).toUpperCase();
+
+      const isSMA = levelString.includes("SMA") || levelString.includes("SMK") || levelString.includes("SLTA");
+      const isD3  = levelString.includes("D3") || levelString.includes("DIPLOMA 3");
+      const isS1  = levelString.includes("S1") || levelString.includes("D4") || levelString.includes("SARJANA");
+
+      setupEduCard('sma', isSMA, reqsHTML, job.quota);
+      setupEduCard('d3', isD3, reqsHTML, job.quota);
+      setupEduCard('s1', isS1, reqsHTML, job.quota);
+
       localStorage.setItem("posisiDilamar", job.title);
       localStorage.setItem("departemenTujuan", job.dept);
+      localStorage.setItem("lowongan_id", job.id);
+
       jobModal.show();
     }
   });
 
-  // ==== Tombol Lamar Sekarang ====
-  applyBtn.addEventListener("click", () => {
-    document.body.style.transition = "opacity 0.5s ease";
-    document.body.style.opacity = 0;
-    setTimeout(() => {
-      window.location.href = "/applyform";
-    }, 500);
+  jobModalElement.addEventListener("click", (e) => {
+      if(e.target.classList.contains("btn-apply-track")) {
+          const selectedLevel = e.target.getAttribute("data-level");
+          localStorage.setItem("jenjang_terpilih", selectedLevel);
+
+          document.body.style.transition = "opacity 0.5s ease";
+          document.body.style.opacity = 0;
+          setTimeout(() => {
+              window.location.href = "/applyform";
+          }, 500);
+      }
   });
 });

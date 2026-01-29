@@ -82,7 +82,7 @@ class MagangController extends Controller
             'file_foto' => $fotoPath,
             'file_ktm' => $ktmPath, // Bisa null
             'file_ktp' => $ktpPath, // Bisa null
-            'link_porto' => $request->link,
+            'link_porto' => $request->link, // Bisa null
         ]);
 
         // 5. Redirect Sukses

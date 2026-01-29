@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Lowongan extends Model
 {
     use HasFactory;
+    
     protected $table = 'lowongan';
-	
 
     protected $fillable = [
         'title', 
@@ -18,11 +18,13 @@ class Lowongan extends Model
         'quota', 
         'deadline', 
         'description',
-		'requirements',		
+        'requirements',     
         'is_active'
     ];
-	protected $casts = ['level' => 'array',
-'deadline' => 'date',
-'is_active' => 'boolean',];
 
+    // HAPUS 'level' => 'array' dari sini agar tidak return null jika data bukan JSON
+    protected $casts = [
+        'deadline' => 'date',
+        'is_active' => 'boolean',
+    ];
 }

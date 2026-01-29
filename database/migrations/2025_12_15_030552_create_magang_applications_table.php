@@ -15,6 +15,8 @@ class CreateMagangApplicationsTable extends Migration
     {
         Schema::create('magang_applications', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('lowongan_id');
+            $table->foreign('lowongan_id')->references('id')->on('lowongan');
 
             // Data Pribadi
             $table->string('nama');
@@ -34,10 +36,9 @@ class CreateMagangApplicationsTable extends Migration
             // Dokumen (Menyimpan path/lokasi file)
             $table->string('file_cv');
             $table->string('file_surat_rekomendasi');
-            $table->string('file_transkrip'); 
-            $table->string('file_ktp');
+            $table->string('file_ktp')->nullable();
             $table->string('file_foto');
-            $table->string('file_ktm');
+            $table->string('file_ktm')->nullable();
             $table->string('link_porto')->nullable();
             
             $table->timestamps();
