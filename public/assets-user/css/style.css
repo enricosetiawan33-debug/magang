@@ -1,240 +1,319 @@
 /* === STYLE DASAR === */
-body {
-font-family: 'Poppins', sans-serif;
-background-color: #f8f9fa;
-}
-
-.logo {
-width: 70px;
-height: 70px;
-border-radius: 50%;
-}
-
-/* === HIGHLIGHT BERITA === */
-.highlight {
-background-color: #0d6efd;
-height: 300px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-/* === KOTAK BERITA === */
-.news-box {
-background-color: #dee2e6;
-height: 140px;
-border-radius: 6px;
-}
-
-/* === FOOTER === */
-footer {
-border-top: 2px solid #ccc;
-}
-
-/* === LINK SOSIAL MEDIA MAGANG === */
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f8f9fa;
-}
-
-/* HEADER */
-.header-gradient {
-  background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
-}
-
-.logo {
-  width: 60px;
-  height: auto;
-}
-
-/* Hero section dengan gradasi dan efek lembut */
-.hero-section {
-  background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
-  min-height: 90vh;
+html, body {
+  /* Mencegah scroll ke samping akibat animasi AOS atau margin negatif Bootstrap */
+  overflow-x: hidden; 
+  width: 100%;
   position: relative;
-  overflow: hidden;
+}
+
+body {
   font-family: 'Poppins', sans-serif;
-}
-
-/* Efek floating animasi pelan pada gambar */
-.hero-img {
-  animation: float 4s ease-in-out infinite;
-}
-
-/* Keyframes animasi floating */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Tombol agar makin lembut dan responsif */
-.hero-section .btn {
-  transition: all 0.3s ease;
-}
-
-.hero-section .btn:hover {
   background-color: #f8f9fa;
-  color: #007bff;
-  transform: translateY(-3px);
 }
 
-/* CARD HOVER */
-.hover-card {
-  transition: all 0.3s ease;
-}
-
-.hover-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* SOCIAL ICONS */
-.social-link {
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s ease;
-}
-
-.social-link:hover small {
-  color: #0d6efd;
-  font-weight: 600;
-}
-
-/* Penyesuaian lebar social-link-custom agar jaraknya lebih rapi */
-.social-link-custom {
-  display: block;
-  text-align: center;
-  /* Tambahkan properti di bawah untuk menangani teks panjang */
-  white-space: nowrap; /* Mencegah teks pindah baris */
-  overflow: hidden; /* Menyembunyikan teks jika terlalu panjang */
-  text-overflow: ellipsis; /* Menambahkan '...' jika teks terpotong (opsional) */
-  /* --- */
-  padding: 0; 
-  width: 90px; /* Lebar harus cukup untuk menampung teks terpanjang */
-  text-decoration: none;
-  color: #333;
-}
-
-/* Efek transisi halaman */
-.fade-out {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.fade-in {
-  opacity: 0;
-  animation: fadeIn 0.6s forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
+/* ... (lanjut ke style logo dll) */
+  
+  .logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   }
-}
-
-/* --- Tambahkan di bagian akhir style.css --- */
-
-/* MODAL FOLLOW SOSMED CUSTOM */
-.modal-header-custom {
-  background: linear-gradient(135deg, #0d6efd 0%, #00c6ff 100%); /* Gradasi biru gelap */
-  border-bottom: none;
-  border-radius: 0.5rem 0.5rem 0 0 !important;
-  font-family: 'Poppins', sans-serif;
-}
-
-.modal-content {
-  border-radius: 0.5rem;
-}
-
-.modal-title {
-  font-weight: 600;
-  font-size: 1.25rem;
-}
-
-/* Styling untuk setiap link sosmed */
-.social-link-custom {
-  display: block;
-  text-align: center;
-  padding: 10px;
-  width: 90px; /* Lebar tetap untuk konsistensi */
-  text-decoration: none;
-  color: #333;
-}
-
-.social-link-custom i {
-  font-size: 3rem; /* Ukuran icon lebih besar */
-  margin-bottom: 5px;
-}
-
-.social-link-custom small {
-  display: block;
-  font-size: 0.75rem;
-}
-
-/* Hover effect */
-.social-link-custom:hover {
-  transform: translateY(-3px);
-  transition: transform 0.2s ease;
-  color: #0d6efd;
-}
-
-.social-link-custom:hover small {
-  font-weight: 600;
-}
-
-/* Mengubah style button Lanjutkan */
-.modal-body .btn-primary {
-  transition: all 0.3s ease;
-}
-
-.modal-body .btn-primary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-}
-
-/* --- Tambahkan di bagian akhir style.css --- */
-
-/* MODAL FOLLOW SOSMED CUSTOM (lanjutan dari perbaikan sebelumnya) */
-
-/* ... (Kode styling .modal-header-custom dan social-link-custom di sini) ... */
-
-/* Styling Custom Footer untuk tombol Lanjutkan */
-.modal-footer-custom {
-  /* Menghilangkan border default */
-  border-top: none; 
-  /* Memberikan sudut melengkung di bagian bawah */
-  border-radius: 0 0 0.5rem 0.5rem; 
-  overflow: hidden; /* Penting untuk memastikan button yang w-100 ikut melengkung */
-}
-
-.modal-footer-custom .btn-primary {
-  /* Hapus border default button */
-  border: none !important;
-  /* Atur background gradasi biru untuk tombol yang menutupi area footer */
-  background: linear-gradient(90deg, #0d6efd 0%, #00c6ff 100%); 
-  font-weight: 600;
-  transition: background 0.3s ease;
-}
-
-.modal-footer-custom .btn-primary:hover {
-  background: linear-gradient(90deg, #00c6ff 0%, #0d6efd 100%); 
-}
-
-/* --- Tambahkan di bagian akhir style.css --- */
-
-/* Memperbaiki posisi ikon sosmed di modal */
-.modal-body .d-flex {
-  /* Pastikan elemen flex menempati lebar penuh untuk perhitungan centering yang akurat */
-  width: 100%; 
   
-  /* Tambahkan sedikit padding horizontal pada kontainer flex */
-  padding: 0 15px; 
+  /* === HIGHLIGHT BERITA === */
+  .highlight {
+  background-color: #0d6efd;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
   
-  /* Menggunakan 'space-between' untuk jarak antar ikon yang sama */
-  justify-content: space-between !important; 
-}
+  /* === KOTAK BERITA === */
+  .news-box {
+  background-color: #dee2e6;
+  height: 140px;
+  border-radius: 6px;
+  }
+  
+  /* === FOOTER === */
+  footer {
+  border-top: 2px solid #ccc;
+  }
+  
+  /* === LINK SOSIAL MEDIA MAGANG === */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  /* HEADER */
+  .header-gradient {
+    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+  }
+  
+  .logo {
+    width: 60px;
+    height: auto;
+  }
+  
+  /* Hero section dengan gradasi dan efek lembut */
+  .hero-section {
+    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+    min-height: 90vh;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Efek floating animasi pelan pada gambar */
+  .hero-img {
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  /* Keyframes animasi floating */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  /* Tombol agar makin lembut dan responsif */
+  .hero-section .btn {
+    transition: all 0.3s ease;
+  }
+  
+  .hero-section .btn:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+    transform: translateY(-3px);
+  }
+  
+  /* CARD HOVER */
+  .hover-card {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* SOCIAL ICONS */
+  .social-link {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+  }
+  
+  .social-link:hover small {
+    color: #0d6efd;
+    font-weight: 600;
+  }
+  
+  /* Penyesuaian lebar social-link-custom agar jaraknya lebih rapi */
+  .social-link-custom {
+    display: block;
+    text-align: center;
+    /* Tambahkan properti di bawah untuk menangani teks panjang */
+    white-space: nowrap; /* Mencegah teks pindah baris */
+    overflow: hidden; /* Menyembunyikan teks jika terlalu panjang */
+    text-overflow: ellipsis; /* Menambahkan '...' jika teks terpotong (opsional) */
+    /* --- */
+    padding: 0; 
+    width: 90px; /* Lebar harus cukup untuk menampung teks terpanjang */
+    text-decoration: none;
+    color: #333;
+  }
+  
+  /* Efek transisi halaman */
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.6s forwards;
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* --- Tambahkan di bagian akhir style.css --- */
+  
+  /* MODAL FOLLOW SOSMED CUSTOM */
+  .modal-header-custom {
+    background: linear-gradient(135deg, #0d6efd 0%, #00c6ff 100%); /* Gradasi biru gelap */
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .modal-content {
+    border-radius: 0.5rem;
+  }
+  
+  .modal-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+  
+  /* Styling untuk setiap link sosmed */
+  .social-link-custom {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    width: 90px; /* Lebar tetap untuk konsistensi */
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .social-link-custom i {
+    font-size: 3rem; /* Ukuran icon lebih besar */
+    margin-bottom: 5px;
+  }
+  
+  .social-link-custom small {
+    display: block;
+    font-size: 0.75rem;
+  }
+  
+  /* Hover effect */
+  .social-link-custom:hover {
+    transform: translateY(-3px);
+    transition: transform 0.2s ease;
+    color: #0d6efd;
+  }
+  
+  .social-link-custom:hover small {
+    font-weight: 600;
+  }
+  
+  /* Mengubah style button Lanjutkan */
+  .modal-body .btn-primary {
+    transition: all 0.3s ease;
+  }
+  
+  .modal-body .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+  }
+  
+  /* --- Tambahkan di bagian akhir style.css --- */
+  
+  /* MODAL FOLLOW SOSMED CUSTOM (lanjutan dari perbaikan sebelumnya) */
+  
+  /* ... (Kode styling .modal-header-custom dan social-link-custom di sini) ... */
+  
+  /* Styling Custom Footer untuk tombol Lanjutkan */
+  .modal-footer-custom {
+    /* Menghilangkan border default */
+    border-top: none; 
+    /* Memberikan sudut melengkung di bagian bawah */
+    border-radius: 0 0 0.5rem 0.5rem; 
+    overflow: hidden; /* Penting untuk memastikan button yang w-100 ikut melengkung */
+  }
+  
+  .modal-footer-custom .btn-primary {
+    /* Hapus border default button */
+    border: none !important;
+    /* Atur background gradasi biru untuk tombol yang menutupi area footer */
+    background: linear-gradient(90deg, #0d6efd 0%, #00c6ff 100%); 
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+  
+  .modal-footer-custom .btn-primary:hover {
+    background: linear-gradient(90deg, #00c6ff 0%, #0d6efd 100%); 
+  }
+  
+  /* --- Tambahkan di bagian akhir style.css --- */
+  
+  /* Memperbaiki posisi ikon sosmed di modal */
+  .modal-body .d-flex {
+    /* Pastikan elemen flex menempati lebar penuh untuk perhitungan centering yang akurat */
+    width: 100%; 
+    
+    /* Tambahkan sedikit padding horizontal pada kontainer flex */
+    padding: 0 15px; 
+    
+    /* Menggunakan 'space-between' untuk jarak antar ikon yang sama */
+    justify-content: space-between !important; 
+  }
+  
+  /* === JOB SNEAK PEEK CARDS === */
+  
+  .job-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid rgba(0,0,0,0.05) !important;
+  }
+  
+  .job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+    border-color: #0d6efd !important;
+  }
+  
+  /* Badge Backgrounds Soft (Warna pastel transparan) */
+  .bg-soft-primary {
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+  .bg-soft-success {
+    background-color: rgba(25, 135, 84, 0.1);
+  }
+  .bg-soft-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #856404 !important; /* Agar teks terbaca jelas */
+  }
+  
+  /* Penyesuaian Badge di dalam card */
+  .job-card .badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+  }
+  
+  /* Tombol Detail kecil */
+  .job-card .btn-outline-primary {
+    border-width: 1px;
+  }
+  .job-card .btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
+  }
 
+  .badge-scroll-container {
+    /* Mengizinkan scroll ke samping */
+    overflow-x: auto;
+    
+    /* Memastikan item tetap dalam satu baris (tidak turun ke bawah) */
+    flex-wrap: nowrap;
+    
+    /* Memberikan sedikit jarak di bawah untuk scrollbar (jika ada) */
+    padding-bottom: 5px;
+    
+    /* Agar scroll terasa halus di layar sentuh/HP */
+    -webkit-overflow-scrolling: touch;
+    
+    /* Menyembunyikan Scrollbar (Opsional - agar lebih rapi) */
+    scrollbar-width: none; /* Untuk Firefox */
+    -ms-overflow-style: none; /* Untuk IE/Edge lama */
+  }
+  
+  /* Menyembunyikan Scrollbar untuk Chrome, Safari, Opera */
+  .badge-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Memastikan Badge tidak tergencet/mengecil */
+  .badge-scroll-container .badge {
+    flex-shrink: 0; /* PENTING: Mencegah badge mengecil saat ruang habis */
+    white-space: nowrap; /* Mencegah teks di dalam badge turun baris */
+  }
+  
+  
