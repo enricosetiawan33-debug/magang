@@ -86,6 +86,9 @@ class MagangController extends Controller
         ]);
 
         // 5. Redirect Sukses
-        return redirect()->back()->with('success', 'Lamaran berhasil dikirim!');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Lamaran berhasil dikirim!'
+        ], 200);
     }
 }

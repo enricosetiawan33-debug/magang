@@ -26,45 +26,28 @@
     </header>
     
     <main class="container my-5">
-            <div class="container mt-3">
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert" id="manualAlert">
-                        <i class="bi bi-check-circle-fill me-2"></i>
-                        <strong>Status:</strong> {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
-
-                @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            </div>
         <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="mb-4 fw-semibold text-primary">Isi Data Diri dan Dokumen</h5>
-                <form method="POST" action="{{ route('apply.submit') }}" id="applyForm" enctype="multipart/form-data" >
-                @csrf
+                <form method="POST" action="{{ route('apply.submit') }}" id="applyForm" enctype="multipart/form-data" novalidate>
+                    @csrf
                     <input type="hidden" id="lowongan_id" name="lowongan_id">
-                    <!-- Data pribadi -->
+                    
                     <h6 class="mb-3 text-secondary">Data Pribadi</h6>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nama" name="nama"required>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
+                        
                         <div class="col-md-6">
                             <label class="form-label">NIM / NISN <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nim" name="nim" required inputmode="numeric" pattern="[0-9]{8,15}" title="NIM/No. Induk harus berupa angka dengan panjang antara 8 hingga 15 digit."> 
-                            <div class="invalid-feedback">
-                                NIM/No. Induk harus berupa angka dengan panjang antara 8 hingga 15 digit.
+                            <input type="text" class="form-control" id="nim" name="nim" required inputmode="numeric" placeholder="Contoh: 12345678"> 
+                            <div class="invalid-feedback" id="error-nim">
+                                NIM harus berupa angka (8-15 digit).
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Universitas / Sekolah <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="univ" name="univ" required>
@@ -76,42 +59,26 @@
 
                         <div class="col-md-6">
                             <label class="form-label">Email Aktif <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" required title="Masukkan email yang valid">
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="nama@email.com">
+                            <div class="invalid-feedback" id="error-email">
+                                Format email tidak valid.
+                            </div>
                         </div>
                         
                         <div class="col-md-6">
-                        <div class="d-flex align-items-center mb-2">
-                            <label class="form-label mb-0 me-2" for="telepon">
-                                No. Telepon Whatsapp <span class="text-danger">*</span>
-                            </label>
-                            
-                            <a tabindex="0" 
-                            class="btn btn-sm btn-outline-info rounded-pill py-0 px-2" 
-                            role="button" 
-                            data-bs-toggle="popover" 
-                            data-bs-trigger="focus" 
-                            data-bs-html="true"
-                            title="<i class='bi bi-whatsapp text-success'></i> Informasi Kontak"
-                            data-bs-content="
-                            <div class='mb-2 small'>
-                                <span class='text-danger fw-bold'><i class='bi bi-exclamation-circle-fill'></i> Penting:</span>
-                                Pastikan nomor ini <b>terhubung dengan WhatsApp</b>.
+                            <div class="d-flex align-items-center mb-2">
+                                <label class="form-label mb-0 me-2" for="telepon">
+                                    No. Telepon Whatsapp <span class="text-danger">*</span>
+                                </label>
+                                <a tabindex="0" class="btn btn-sm btn-outline-info rounded-pill py-0 px-2" role="button" data-bs-toggle="popover" title="<i class='bi bi-whatsapp text-success'></i> Informasi Kontak" data-bs-content="Pastikan nomor terhubung WA."> <i class="bi bi-info-circle-fill"></i> Info Penting </a>
                             </div>
-                            <p class='mb-2 small'>Kami akan mengirimkan <b>Pengumuman Seleksi</b> melalui nomor ini.</p>
-                            <div class='p-2 bg-light rounded border border-light'>
-                                <small class='text-muted d-block'>Official Contact Center:</small>
-                                <strong class='text-dark'><i class='bi bi-shield-check text-primary'></i> 0812-XXXX-XXXX</strong>
+                            <input type="tel" class="form-control" id="telepon" name="telepon" required placeholder="0812xxxxxxxx">
+                            <div class="invalid-feedback" id="error-telepon">
+                                No. Telepon harus angka (10-15 digit).
                             </div>
-                            ">
-                            <i class="bi bi-info-circle-fill"></i> Info Penting
-                            </a>
                         </div>
-
-                        <input type="tel" class="form-control" id="telepon" name="telepon" required pattern="[0-9]{10,15}" title="Masukkan nomor telepon yang valid (hanya angka, 10-15 digit)">
-                    </div>
                     </div>
                     
-                    <!-- Informasi magang -->
                     <h6 class="mb-3 text-secondary">Informasi Magang</h6>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
@@ -119,7 +86,7 @@
                             <input type="text" class="form-control" id="posisi" name="posisi" readonly>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Departemen Tujuan <span class="text-danger">*</span></label>
+                            <label class="form-label">Substansi Tujuan <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="departemen" name="departemen" readonly>
                         </div>
                         <div class="col-md-4">
@@ -136,49 +103,48 @@
                         </div>
                     </div>
                     
-                    <!-- Dokumen upload -->
                     <h6 class="mb-3 text-secondary">Upload Dokumen Pendukung</h6>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Curriculum Vitae (CV) <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="cv" name="cv" accept=".pdf" required>
-                            <small class="form-text text-muted">Format yang diterima: PDF. Ukuran Maksimal: 2MB</small>
+                            <small class="form-text text-muted">Format: PDF. Max: 2MB</small>
+                            <div class="invalid-feedback" id="error-cv"></div>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Surat Pengantar / Rekomendasi Kampus <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="surat" name="surat" accept=".pdf" required>
-                            <small class="form-text text-muted">Format yang diterima: PDF. Ukuran Maksimal: 2MB</small>
+                            <small class="form-text text-muted">Format: PDF. Max: 2MB</small>
+                            <div class="invalid-feedback" id="error-surat"></div>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <label class="form-label">Transkrip Nilai <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" id="transkrip" name="transkrip" accept=".pdf" required>
-                            <small class="form-text text-muted">Format yang diterima: PDF. Ukuran Maksimal: 2MB</small>
-                        </div> -->
+
                         <div class="col-md-6">
                             <label class="form-label">KTP / Kartu Identitas (Opsional)</label>
                             <input type="file" class="form-control" id="ktp" name="ktp" accept=".pdf,.jpg,.jpeg,.png">
-                            <small class="form-text text-muted">Format yang diterima: PDF, PNG, JPG, JPEG. Ukuran Maksimal: 2MB</small>
+                            <small class="form-text text-muted">Format: PDF, PNG, JPG. Max: 2MB</small>
+                            <div class="invalid-feedback" id="error-ktp"></div>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Pas Foto (3x4) <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="foto" name="foto" accept=".jpg,.jpeg,.png" required>
-                            <small class="form-text text-muted">Format yang diterima: PNG, JPG, JPEG. Ukuran Maksimal: 2MB</small>
-                            <div class="invalid-feedback" id="foto-feedback">
-                                Rasio foto harus 3x4. Silakan unggah ulang.
-                            </div>
-                        </div>
+                            <small class="form-text text-muted">Format: PNG, JPG. Max: 2MB</small>
+                            <div class="invalid-feedback" id="foto-feedback"></div> </div>
+
                         <div class="col-md-6">
-                            <label class="form-label">KTM / Kartu Tanda Mahasiswa <span class="text-danger">(Wajib untuk Mahasiswa)</span></label>
+                            <label class="form-label">KTM / Kartu Tanda Mahasiswa <span class="text-danger">(Wajib Untuk Mahasiswa)</span></label>
                             <input type="file" class="form-control" id="ktm" name="ktm" accept=".jpg,.jpeg,.png">
-                            <small class="form-text text-muted">Format yang diterima: PNG, JPG, JPEG. Ukuran Maksimal: 2MB</small>
+                            <small class="form-text text-muted">Format: PNG, JPG, JPEG. Max: 2MB</small>
+                            <div class="invalid-feedback" id="error-ktm"></div>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label">Link Portofolio (Opsional)</label>
                             <input type="url" class="form-control" id="link" name="link">
                         </div>
                     </div>
                     
-                    <!-- Tombol -->
                     <div class="d-flex justify-content-end gap-2 mt-4">
                         <button type="reset" class="btn btn-outline-secondary">Reset</button>
                         <button type="submit" class="btn btn-primary">Kirim Lamaran</button>
