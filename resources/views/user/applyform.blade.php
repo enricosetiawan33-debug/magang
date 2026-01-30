@@ -70,7 +70,16 @@
                                 <label class="form-label mb-0 me-2" for="telepon">
                                     No. Telepon Whatsapp <span class="text-danger">*</span>
                                 </label>
-                                <a tabindex="0" class="btn btn-sm btn-outline-info rounded-pill py-0 px-2" role="button" data-bs-toggle="popover" title="<i class='bi bi-whatsapp text-success'></i> Informasi Kontak" data-bs-content="Pastikan nomor terhubung WA."> <i class="bi bi-info-circle-fill"></i> Info Penting </a>
+                                <a tabindex="0" 
+                                    class="btn btn-sm btn-outline-info rounded-pill py-0 px-2" 
+                                    role="button" 
+                                    data-bs-toggle="popover" 
+                                    data-bs-trigger="focus" 
+                                    data-bs-html="true"
+                                    title="<i class='bi bi-whatsapp text-success'></i> Informasi Kontak"
+                                    data-bs-content="<div class='mb-2 small'><span class='text-danger fw-bold'><i class='bi bi-exclamation-circle-fill'></i> Penting:</span> Pastikan nomor ini <b>terhubung dengan WhatsApp</b>.</div><p class='mb-2 small'>Kami akan mengirimkan <b>Pengumuman Seleksi</b> melalui nomor ini.</p><div class='p-2 bg-light rounded border'><small class='text-muted d-block'>Official Contact Center:</small><strong class='text-dark'><i class='bi bi-shield-check text-primary'></i> 0812-XXXX-XXXX</strong></div>">
+                                    <i class="bi bi-info-circle-fill"></i> Info Penting
+                                </a>
                             </div>
                             <input type="tel" class="form-control" id="telepon" name="telepon" required placeholder="0812xxxxxxxx">
                             <div class="invalid-feedback" id="error-telepon">
