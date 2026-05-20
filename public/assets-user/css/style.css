@@ -279,6 +279,7 @@ body {
   }
 
   .badge-scroll-container {
+    max-width: 100%;
     /* Mengizinkan scroll ke samping */
     overflow-x: auto;
     

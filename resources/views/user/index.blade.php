@@ -15,7 +15,7 @@
 
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="{{ asset('assets-user/css/style.css') }}?v=1.0.1">
+  <link rel="stylesheet" href="{{ asset('assets-user/css/style.css') }}?v=1.0.2">
 </head>
 
 <body>
