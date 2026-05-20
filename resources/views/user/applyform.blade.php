@@ -11,10 +11,10 @@
     <title>Formulir Lamaran Magang - Biro Umum dan Pengadaan Barang dan Jasa</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('assets-user/images/logo.png') }}">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="assets-user/bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets-user/bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets-user/css/applyform.css">
+    <link rel="stylesheet" href="{{ asset('assets-user/css/applyform.css') }}?v=1.0.1">
 </head>
 
 <body>
@@ -77,7 +77,7 @@
                                     data-bs-trigger="focus" 
                                     data-bs-html="true"
                                     title="<i class='bi bi-whatsapp text-success'></i> Informasi Kontak"
-                                    data-bs-content="<div class='mb-2 small'><span class='text-danger fw-bold'><i class='bi bi-exclamation-circle-fill'></i> Penting:</span> Pastikan nomor ini <b>terhubung dengan WhatsApp</b>.</div><p class='mb-2 small'>Kami akan mengirimkan <b>Pengumuman Seleksi</b> melalui nomor ini.</p><div class='p-2 bg-light rounded border'><small class='text-muted d-block'>Official Contact Center:</small><strong class='text-dark'><i class='bi bi-shield-check text-primary'></i> 0812-XXXX-XXXX</strong></div>">
+                                    data-bs-content="<div class='mb-2 small'><span class='text-danger fw-bold'><i class='bi bi-exclamation-circle-fill'></i> Penting:</span> Pastikan nomor ini <b>terhubung dengan WhatsApp</b>.</div><p class='mb-2 small'>Kami akan mengirimkan <b>Pengumuman Seleksi</b> melalui nomor ini.</p><div class='p-2 bg-light rounded border'><small class='text-muted d-block'>Official Contact Center:</small><strong class='text-dark'><i class='bi bi-shield-check text-primary'></i> 0821-2553-7119</strong></div>">
                                     <i class="bi bi-info-circle-fill"></i> Info Penting
                                 </a>
                             </div>
@@ -259,9 +259,9 @@
     © 2025 Biro Umum & PBJ — Formulir Pendaftaran Magang
 </footer>
     
-<script src="assets-user/bootstrap/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('assets-user/bootstrap/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.id.min.js" charset="UTF-8"></script>
-<script src="assets-user/js/applyform.js"></script>
+<script src="{{ asset('assets-user/js/applyform.js') }}?v=1.0.1"></script>
 <script>
     // Animasi Fade In
     document.addEventListener("DOMContentLoaded", () => {

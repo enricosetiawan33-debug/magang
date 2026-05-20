@@ -27,7 +27,6 @@ class CreateMagangApplicationsTable extends Migration
             $table->string('no_telepon');
 
             // Informasi Magang
-            $table->string('posisi_dilamar');
             $table->string('departemen');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');

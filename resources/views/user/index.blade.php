@@ -8,14 +8,14 @@
   <meta http-equiv="Expires" content="0">
   <title>Program Magang - Biro Umum dan Pengadaan Barang dan Jasa</title>
   <link rel="icon" type="image/x-icon" href="{{ asset('assets-user/images/logo.png') }}">
-  <link rel="stylesheet" href="assets-user/bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ asset('assets-user/bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets-user/css/style.css">
+  <link rel="stylesheet" href="{{ asset('assets-user/css/style.css') }}?v=1.0.1">
 </head>
 
 <body>
@@ -50,7 +50,7 @@
       </p>
       
       <div class="mt-5" data-aos="zoom-in" data-aos-delay="300">
-        <img src="assets-user\images\ilustrasi-magang.jpg" alt="Ilustrasi Magang" class="hero-img" width="300">
+        <img src="{{ asset('assets-user/images/ilustrasi-magang.jpg') }}" alt="Ilustrasi Magang" class="hero-img" width="300">
       </div>
     </div>
   </section>

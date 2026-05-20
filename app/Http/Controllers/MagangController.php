@@ -72,7 +72,6 @@ class MagangController extends Controller
             'program_studi' => $request->jurusan,
             'email' => $request->email,
             'no_telepon' => $request->telepon,
-            'posisi_dilamar' => $request->posisi,
             'departemen' => $request->departemen,
             'tanggal_mulai' => $request->mulai,
             'tanggal_selesai' => $request->selesai,
